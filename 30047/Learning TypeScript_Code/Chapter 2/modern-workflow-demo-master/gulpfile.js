@@ -1,16 +1,17 @@
-var tslint = require('gulp-tslint');
+
 var ts = require('gulp-typescript');
 var gulp = require('gulp');
 var browserify = require('gulp-browserify'),
-  transform = require('vinyl-transform'),
   uglify = require('gulp-uglify'),
   sourcemaps = require('gulp-sourcemaps');
 
-gulp.task('lint', function () {
-  return gulp.src(['./source/ts/**/**.ts', '.test/**/**.test.ts'])
-    .pipe(tslint())
-    .pipe(tslint.report('verbose'));
-});
+var runSequence = require('run-sequence');
+
+// gulp.task('lint', function () {
+//   return gulp.src(['./source/ts/**/**.ts', '.test/**/**.test.ts'])
+//     .pipe(tslint())
+//     .pipe(tslint.report('verbose'));
+// });
 
 var tsProject = ts.createProject({
   removeComments: true,
@@ -56,4 +57,55 @@ gulp.task('bundle-test', function(){
     .pipe(browserify())
     .pipe(gulp.dest('./dist/test/'))
 })
-gulp.task('default', ['lint', 'tsc', 'tsc-tests', 'bundle-js', 'bundle-test']);
+
+// gulp.task('sync', function(cb){ //Transmit a call function
+//   setTimeout(function() {
+//     cb(); //callback function
+//   }, 1000);
+// })
+
+// gulp.task('sync2', function(){
+//   return gulp.src('js/*.js') //Return pipe steam
+//     .pipe(contact('script.min.js'))
+// })
+
+var karma = require('gulp-karma');
+gulp.task('karma', function(cb){
+  gulp.src('./dist/test/**/**.test.js')
+    .pipe(karma({
+      configFile: 'karma.conf.js',
+      action: 'run'
+    }))
+    .on('end', cb)
+    .on('error', function(err){
+      throw err;
+    })
+})
+
+gulp.task('bundle', function(cb){
+  runSequence([
+    'bundle-js', 'bundle-test'
+  ], cb)
+})
+
+gulp.task('test', function(cb){
+  runSequence('bundle', ['karma'], cb)
+})
+
+var browserSync = require('browser-sync');
+gulp.task('browser-sync', ['test'], function(){
+  browserSync({
+    server:{
+      baseDir: './dist'
+    }
+  })
+  return gulp.watch([
+    './dist/source/js/**/*.js',
+    './dist/source/css/*.css',
+    './dist/test/**/**.test.js',
+    './dist/data/**/**',
+    'index.html',
+  ], [browserSync.reload])
+})
+
+gulp.task('default', ['browser-sync']);

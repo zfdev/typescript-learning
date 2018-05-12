@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "debug": "registry:npm/debug#2.0.0+20170504163145"
+  },
+  "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20170310222111"
+  },
+  "globalDevDependencies": {
+    "handlebars": "registry:dt/handlebars#4.0.5+20170310072326"
+  },
+  "devDependencies": {
+    "q": "registry:dt/q#1.0.0+20170315012124"
+  }
+}

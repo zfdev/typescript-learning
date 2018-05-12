@@ -15,7 +15,7 @@ module.exports = function (config) {
         preprocessors: {
           './dist/test/*.test.js' : ['coverage']
         },
-        port: 9876,
+        port: 19876,
         colors: true,
         autoWatch: false,
         singleRun: false,
