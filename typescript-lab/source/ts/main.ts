@@ -53,91 +53,91 @@
 // newPeople.greetDelay(5000);
 
 //Promise
-///<reference path="..\..\typings\globals\handlebars\index.d.ts" /> 
-import $ from "jquery";
+// ///<reference path="..\..\typings\globals\handlebars\index.d.ts" /> 
+// import $ from "jquery";
 // import * as Q from 'Q';
-type cb = (json:any) => void;
-class View{
-    private _container: string;
-    private _templateUrl: string;
-    private _serviceUrl: string;
-    private _args: any;
-    constructor(config: any){
-        this._container = config.container;
-        this._templateUrl = config.templateUrl;
-        this._serviceUrl = config.serviceUrl;
-        this._args = config.args;
-    }
-    private _loadJson(url: string, args: any, cb: cb, errorCb:cb){
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "json",
-            data: args,
-            success: (json) => {
-                cb(json);
-            },
-            error: (e)=>{
-                errorCb(e);
-            }
-        })
-    }
-    private _loadHbs(url: string, cb: cb, errorCb:cb){
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "text",
-            success: (hbs) => {
-                cb(hbs);
-            },
-            error: (e)=>{
-                errorCb(e);
-            }
-        })
-    }
-    private _compileHbs(hbs: string, cb: cb, errorCb:cb){
-        try{
-            var template = Handlebars.compile(hbs);
-            cb(template);
-        }catch(e){
-            errorCb(e);
-        }
-    }
-    private _jsonToHtml(template: any, json: any, cb: cb, errorCb:cb){        
-        try{
-            var html = template(json);
-            cb(html);
-        }catch(e){
-            errorCb(e);
-        }
-    } 
-    private _appendHtml(html: string, cb: cb, errorCb:cb){
-        try{
-            if($(this._container).length === 0){
-                throw new Error("Container not found!");
-            }
-            $(this._container).html(html);
-            cb($(this._container));
-        }catch(e){
-            errorCb(e);
-        }
-    }
-    public render(cb: cb, errorCb: cb){
-        try {
-            this._loadJson(this._serviceUrl, this._args, (json)=>{
-                this._loadHbs(this._templateUrl, (hbs)=>{
-                    this._compileHbs(hbs, (template)=>{
-                        this._jsonToHtml(template, json, (html)=>{
-                            this._appendHtml(html, cb, errorCb);
-                        }, errorCb)
-                    }, errorCb);
-                }, errorCb);
-            }, errorCb);
-        } catch (e) {
-            errorCb(e);
-        }
-    }
-}
+// type cb = (json:any) => void;
+// class View{
+//     private _container: string;
+//     private _templateUrl: string;
+//     private _serviceUrl: string;
+//     private _args: any;
+//     constructor(config: any){
+//         this._container = config.container;
+//         this._templateUrl = config.templateUrl;
+//         this._serviceUrl = config.serviceUrl;
+//         this._args = config.args;
+//     }
+//     private _loadJson(url: string, args: any, cb: cb, errorCb:cb){
+//         $.ajax({
+//             url: url,
+//             type: "GET",
+//             dataType: "json",
+//             data: args,
+//             success: (json) => {
+//                 cb(json);
+//             },
+//             error: (e)=>{
+//                 errorCb(e);
+//             }
+//         })
+//     }
+//     private _loadHbs(url: string, cb: cb, errorCb:cb){
+//         $.ajax({
+//             url: url,
+//             type: "GET",
+//             dataType: "text",
+//             success: (hbs) => {
+//                 cb(hbs);
+//             },
+//             error: (e)=>{
+//                 errorCb(e);
+//             }
+//         })
+//     }
+//     private _compileHbs(hbs: string, cb: cb, errorCb:cb){
+//         try{
+//             var template = Handlebars.compile(hbs);
+//             cb(template);
+//         }catch(e){
+//             errorCb(e);
+//         }
+//     }
+//     private _jsonToHtml(template: any, json: any, cb: cb, errorCb:cb){        
+//         try{
+//             var html = template(json);
+//             cb(html);
+//         }catch(e){
+//             errorCb(e);
+//         }
+//     } 
+//     private _appendHtml(html: string, cb: cb, errorCb:cb){
+//         try{
+//             if($(this._container).length === 0){
+//                 throw new Error("Container not found!");
+//             }
+//             $(this._container).html(html);
+//             cb($(this._container));
+//         }catch(e){
+//             errorCb(e);
+//         }
+//     }
+//     public render(cb: cb, errorCb: cb){
+//         try {
+//             this._loadJson(this._serviceUrl, this._args, (json)=>{
+//                 this._loadHbs(this._templateUrl, (hbs)=>{
+//                     this._compileHbs(hbs, (template)=>{
+//                         this._jsonToHtml(template, json, (html)=>{
+//                             this._appendHtml(html, cb, errorCb);
+//                         }, errorCb)
+//                     }, errorCb);
+//                 }, errorCb);
+//             }, errorCb);
+//         } catch (e) {
+//             errorCb(e);
+//         }
+//     }
+// }
 
 // class ViewAsync{
 //     private _container: string;
@@ -262,3 +262,124 @@ class View{
 //     var i = await p;
 //     return 1 + i;
 // }
+
+//Promise
+///<reference path="..\..\typings\modules\q\index.d.ts" /> 
+
+
+// class NotGenericUserRepository{
+//     private _url: string;
+//     constructor(url: string){
+//         this._url = url;
+//     }
+
+//     public getAsync(){
+//         return Q.Promise((resolve: (users: User[]) => void, reject)=>{
+//             $.ajax({
+//                 url: this._url,
+//                 type: "GET",
+//                 dataType: "json",
+//                 success: (data)=>{
+//                     var users = <User[]>data.items;
+//                     resolve(users);
+//                 },
+//                 error: (e)=>{
+//                     reject(e);
+//                 }
+//             });
+//         });
+//     }
+// }
+
+// class NotGenericTalkRepository{
+//     private _url: string;
+//     constructor(url: string){
+//         this._url = url;
+//     }
+
+//     public getAsync(){
+//         return Q.Promise((resolve: (users: Talk[]) => void, reject)=>{
+//             $.ajax({
+//                 url: this._url,
+//                 type: "GET",
+//                 dataType: "json",
+//                 success: (data)=>{
+//                     var talks = <Talk[]>data.items;
+//                     resolve(talks);
+//                 },
+//                 error: (e)=>{
+//                     reject(e);
+//                 }
+//             });
+//         });
+//     }    
+// }
+
+class User implements ValidatableInterface{
+    public name: string;
+    public password: string;
+    public isValid(): boolean{
+        return true;
+    }
+}
+
+class Talk implements ValidatableInterface{
+    public title: string;
+    public description: string;
+    public language: string;
+    public url: string;
+    public year: string;
+    public isValid(): boolean{
+        return true;
+    }    
+}
+
+interface ValidatableInterface{
+    isValid(): boolean;
+}
+
+class GenericRepository<T extends ValidatableInterface>{
+    private _url: string;
+    constructor(url: string){
+        this._url = url;
+    }
+
+    public getAsync(){
+        return Q.Promise((resolve: (users: T[]) => void, reject)=>{
+            $.ajax({
+                url: this._url,
+                type: "GET",
+                dataType: "json",
+                success: (data)=>{
+                    var items = <T[]>data.items;
+                    var lists = <T[]>[];
+                    for(var i=0; i< items.length; i++){
+                        if(items[i].isValid()){
+                            lists.push(items[i]);
+                        }
+                    }
+                    resolve(lists);
+                },
+                error: (e)=>{
+                    reject(e);
+                }
+            });
+        });
+    }    
+}
+
+var userRepository = new GenericRepository<User>("./demos/shared/users.json");
+userRepository.getAsync().then(function(users: User[]){
+    console.log('notGenericUserRepository =>', users);
+});
+
+var talkRepository = new GenericRepository<Talk>("./demos/shared/talks.json");
+talkRepository.getAsync().then(function(talks: Talk[]){
+    console.log('notGenericUserRepository =>', talks);
+});
+
+
+// var notGenericUserRepository = new NotGenericUserRepository("./demos/shared/users.json");
+// notGenericUserRepository.getAsync().then(function(users: User[]){
+//     console.log('notGenericUserRepository =>', users);
+// });
