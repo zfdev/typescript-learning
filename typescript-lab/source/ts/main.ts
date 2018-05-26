@@ -56,6 +56,7 @@
 // ///<reference path="..\..\typings\globals\handlebars\index.d.ts" /> 
 // import $ from "jquery";
 // import * as Q from 'Q';
+//import { UserModule } from './modules';
 // type cb = (json:any) => void;
 // class View{
 //     private _container: string;
@@ -264,7 +265,7 @@
 // }
 
 //Promise
-///<reference path="..\..\typings\modules\q\index.d.ts" /> 
+/////<reference path="..\..\typings\modules\q\index.d.ts" /> 
 
 
 // class NotGenericUserRepository{
@@ -315,71 +316,326 @@
 //     }    
 // }
 
-class User implements ValidatableInterface{
-    public name: string;
-    public password: string;
-    public isValid(): boolean{
-        return true;
-    }
-}
+// class User implements ValidatableInterface{
+//     public name: string;
+//     public password: string;
+//     public isValid(): boolean{
+//         return true;
+//     }
+// }
 
-class Talk implements ValidatableInterface{
-    public title: string;
-    public description: string;
-    public language: string;
-    public url: string;
-    public year: string;
-    public isValid(): boolean{
-        return true;
-    }    
-}
+// class Talk implements ValidatableInterface{
+//     public title: string;
+//     public description: string;
+//     public language: string;
+//     public url: string;
+//     public year: string;
+//     public isValid(): boolean{
+//         return true;
+//     }    
+// }
 
-interface ValidatableInterface{
-    isValid(): boolean;
-}
+// interface ValidatableInterface{
+//     isValid(): boolean;
+// }
 
-class GenericRepository<T extends ValidatableInterface>{
-    private _url: string;
-    constructor(url: string){
-        this._url = url;
-    }
+// class GenericRepository<T extends ValidatableInterface>{
+//     private _url: string;
+//     constructor(url: string){
+//         this._url = url;
+//     }
 
-    public getAsync(){
-        return Q.Promise((resolve: (users: T[]) => void, reject)=>{
-            $.ajax({
-                url: this._url,
-                type: "GET",
-                dataType: "json",
-                success: (data)=>{
-                    var items = <T[]>data.items;
-                    var lists = <T[]>[];
-                    for(var i=0; i< items.length; i++){
-                        if(items[i].isValid()){
-                            lists.push(items[i]);
-                        }
-                    }
-                    resolve(lists);
-                },
-                error: (e)=>{
-                    reject(e);
-                }
-            });
-        });
-    }    
-}
+//     public getAsync(){
+//         return Q.Promise((resolve: (users: T[]) => void, reject)=>{
+//             $.ajax({
+//                 url: this._url,
+//                 type: "GET",
+//                 dataType: "json",
+//                 success: (data)=>{
+//                     var items = <T[]>data.items;
+//                     var lists = <T[]>[];
+//                     for(var i=0; i< items.length; i++){
+//                         if(items[i].isValid()){
+//                             lists.push(items[i]);
+//                         }
+//                     }
+//                     resolve(lists);
+//                 },
+//                 error: (e)=>{
+//                     reject(e);
+//                 }
+//             });
+//         });
+//     }    
+// }
 
-var userRepository = new GenericRepository<User>("./demos/shared/users.json");
-userRepository.getAsync().then(function(users: User[]){
-    console.log('notGenericUserRepository =>', users);
-});
-
-var talkRepository = new GenericRepository<Talk>("./demos/shared/talks.json");
-talkRepository.getAsync().then(function(talks: Talk[]){
-    console.log('notGenericUserRepository =>', talks);
-});
-
-
-// var notGenericUserRepository = new NotGenericUserRepository("./demos/shared/users.json");
-// notGenericUserRepository.getAsync().then(function(users: User[]){
+// var userRepository = new GenericRepository<User>("./demos/shared/users.json");
+// userRepository.getAsync().then(function(users: User[]){
 //     console.log('notGenericUserRepository =>', users);
 // });
+
+// var talkRepository = new GenericRepository<Talk>("./demos/shared/talks.json");
+// talkRepository.getAsync().then(function(talks: Talk[]){
+//     console.log('notGenericUserRepository =>', talks);
+// });
+
+// interface IMyInterface{
+//     doSomeThing: ()=>{}
+// }
+
+// interface IMySecondInterface{
+//     doSomeThingElse: ()=>{}
+// }
+
+// interface IChildInterface extends IMyInterface, IMySecondInterface{
+
+// }
+
+// class Example<T extends IChildInterface>{
+//     private genericProperty: T;
+//     userT(){
+//         this.genericProperty.doSomeThing();
+//         this.genericProperty.doSomeThingElse();
+//     }
+// }
+
+// // function factoryNotWorking<T>():T{
+// //     return new T();
+// // }
+
+// function factory<T>():T{
+//     var type: {new(): T;}
+//     return new type();
+// }
+
+// // var notGenericUserRepository = new NotGenericUserRepository("./demos/shared/users.json");
+// // notGenericUserRepository.getAsync().then(function(users: User[]){
+// //     console.log('notGenericUserRepository =>', users);
+// // });
+
+// interface PersistanceServiceInterface{
+//     save(entity: any): number;
+// }
+
+// class CookiePersistanceService implements PersistanceServiceInterface{
+//     save(entity: any): number{
+//         var id = Math.floor(Math.random() * 100 + 1);
+//         return id;
+//     }
+// }
+
+// class LocalStoragePersistanceService implements PersistanceServiceInterface{
+//     save(entity: any): number{
+//         var id = Math.floor(Math.random() * 100 + 1);
+//         return id;
+//     }
+// }
+// //一个方法应该依赖于抽象而不是一个实例
+// class FavouritesController{
+//     private _persistanceService: PersistanceServiceInterface;
+//     constructor(persistanceService: PersistanceServiceInterface){
+//         this._persistanceService = persistanceService;
+//     }
+//     public saveAsFavourite(articleId: number){
+//         return this._persistanceService.save(articleId);
+//     }
+// }
+
+// var favController = new FavouritesController(new CookiePersistanceService());
+// var favController = new FavouritesController(new LocalStoragePersistanceService());
+
+// interface VehicleInterface{
+//     getSpeed(): number;
+//     getVehicleType: string;
+//     isTaxPayed(carId: string):boolean;
+// }
+
+// interface Counter {
+//     (start: number): string;
+//     interval: number;
+//     reset(): void;
+// }
+
+// //Hybrid Types
+// function getCounter(): Counter {
+//     let counter = <Counter>function(start: number){};
+//     counter.interval = 123;
+//     counter.reset = function () { };    
+//     return counter;
+// }
+
+// let c = getCounter();
+// c(10);
+// c.reset();
+// c.interval = 5.0;
+
+// //
+// class Control {
+//     state: any;
+// }
+
+// interface SelectableControl extends Control {
+//     select(): void;
+// }
+
+// class Button extends Control implements SelectableControl {
+//     select() { }
+// }
+
+// class TextBox extends Control {
+//     select() { }
+// }
+
+// class ImageTest implements SelectableControl {
+//     state: any;
+//     select() { }
+// }
+// import TestUserModule = app.module.UserModule;
+// var user = new TestUserModule();
+
+// import {UserValidator, TalkValidator} from './validation';
+
+// class Math1{
+//     public static pow(base: number, exponent: number){
+//         var result = base;
+//         for(var i=1; i<exponent; i++){
+//             result *= result*base;
+//         }
+//         return result;
+//     }
+// }
+
+//Typescript 
+///<reference path="../../node_modules/reflect-metadata/index.d.ts" /> 
+import 'reflect-metadata';
+
+function logType(target: any, key: string){
+    var t = Reflect.getMetadata('design:type', target, key);
+    console.log(`${key} type: ${t.name}`);
+}
+
+@log
+class Person{
+    @log
+    public name: string;
+    public surname: string;
+    constructor(name: string, surname: string){
+        this.name = name;
+        this.surname = surname;
+    }
+    @logType
+    public saySomething(@log something: string):string{
+        return this.name + '' + this.surname + something;
+    }
+}
+ 
+//Class decorator
+//Use to modify the class contructor function
+//构造器通过返回一个新的构造函数，覆盖原有的构造函数，从而实现快速修改一个类的构造函数的功能，这东西确实好啊
+function logClass(target: any){
+    var original = target; //保存原有构造函数的引用
+    //用于生成类的实例的工具方法
+    function construct(constructor, args){ 
+        var c: any = function(){
+            return constructor.apply(this, args);
+        }
+        c.prototype = constructor.prototype;
+        return new c();
+    }
+    //新的构造函数行为
+    //新的构造函数实现了输出console的行为
+    var f:any = function(...args){
+        console.log("New:" + original.name);
+        return construct(original, args);
+    }
+    //复制原型 使得instanceof函数能够正常工作
+    f.prototype = original.prototype;
+    return f;
+}
+
+var me = new Person('Jason', 'Zhang');
+me.saySomething('Hello');
+
+//Method decorator
+function logMethod(target: any, key: string, descriptor: any){
+    var originalMethod = descriptor.value;
+    descriptor.value = function(...args: any[]){
+        var a = args.map(a => JSON.stringify(a)).join();
+        var result = originalMethod.apply(this, args);
+        var r = JSON.stringify(result);
+        console.log(`Call:${key}(${a})=>${r}`);
+        return result;
+    }
+    return descriptor;
+}
+
+
+//Property decorator
+function logProperty(target: any, key: string){
+    var _val = this[key];
+    var getter = function(){
+        console.log(`Get: ${key} => ${_val}`);
+        return _val;
+    }
+    var setter = function(newVal){
+        console.log(`Set: ${key} => ${newVal}`);
+        _val = newVal;
+    }
+
+    if(delete this[key]){
+        Object.defineProperty(target, key, {
+            get: getter,
+            set: setter,
+            enumerable: true,
+            configurable: true
+        });
+    }
+}
+
+//Parameter decorator
+function logParameter(target: any, key: string, index: number){
+    var metadataKey = `_log_${key}_parameters`;
+    if(Array.isArray(target[metadataKey])){
+        target[metadataKey].push(index);
+    }else{
+        target[metadataKey] = [index];
+    }
+}
+
+function readMetadata(target: any, key: string, descriptor: any){
+    var originalMethod = descriptor.value;
+    descriptor.value = function(...args: any[]){
+        var metadataKey = `_log_${key}_parameters`;
+        var indices = target[metadataKey];
+        if(Array.isArray(indices)){
+            for(var i=0; i<args.length; i++){
+                if(indices.indexOf(i) !== -1){
+                    var arg = args[i];
+                    var argStr = JSON.stringify(arg) || arg.toString();
+                    console.log(`${key} arg[${i}]: ${argStr}`);
+                }
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        }
+    }
+    return descriptor;
+}
+
+//Decorator factory
+function log(...args: any[]){
+    switch(args.length){
+        case 1:
+            return logClass.apply(this, args);
+        case 2:
+            logProperty.apply(this. args);
+            break;
+        case 3:
+            if(typeof args[2] === "number"){
+                logParameter.apply(this, args);
+            }
+            return logMethod.apply(this, args);
+        default: 
+            throw new Error('Decorators are not valid here!');
+    }
+}
