@@ -639,3 +639,67 @@ function log(...args: any[]){
             throw new Error('Decorators are not valid here!');
     }
 }
+
+
+//MV*
+//MVVM->Model View View-Model
+//MVP
+
+//Model
+class TaskModel{
+    public created: number;
+    public completed: boolean;
+    public title: string;
+}
+
+//Collection
+
+//Item view
+//Collection view
+
+//Controller
+//管理view model的生命周期
+//实例化model collection 关联起来 联系view
+//控制权转交给其他controller前销毁他们
+//MVC 通过组织controller和它的方法 这些方法和用户的行为一一对应
+
+//Event
+//User event 允许用户通过触发处理的事件 click scroll submit
+//Program event 应用程序自身触发调用的事件 onRender
+
+//Router hash
+class Router{
+    public controllerName: string;
+    public actionName: string;
+    public args: Object[];
+    constructor(controllerName: string, actionName:string, args: Object[]){
+        this.controllerName = controllerName;
+        this.actionName = actionName;
+        this.args = args;
+    }
+}
+
+//Mediator
+//Router->Mediator->Controller
+interface IMediator{
+    publish(e: IAppEvent): void;
+    subscribe(e: IAppEvent): void;
+    unsubscribe(e: IAppEvent): void;
+}
+
+//Dispatcher
+
+//Dom Render or Vistual Dom
+
+
+//UI data binding
+//One way data binding
+//model->view
+
+//Two way data binding
+//model<->view
+
+//Data flow
+
+//Web component
+//Polymer

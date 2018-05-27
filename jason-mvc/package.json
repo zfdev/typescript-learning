@@ -1,0 +1,39 @@
+{
+  "name": "jason-mvc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Zhang",
+  "license": "ISC",
+  "dependencies": {
+    "animate.css": "^3.6.1",
+    "bootstrap": "^4.1.1",
+    "datatables": "^1.10.13",
+    "handlebars": "^4.0.11",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "browserify": "^16.2.2",
+    "chai": "^4.1.2",
+    "gulp": "^3.9.1",
+    "gulp-coveralls": "^0.1.4",
+    "gulp-tslint": "^8.1.3",
+    "gulp-typescript": "^4.0.2",
+    "gulp-uglify": "^3.0.0",
+    "karma": "^2.0.2",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^1.3.0",
+    "karma-sinon": "^1.0.5",
+    "mocha": "^5.2.0",
+    "run-sequence": "^2.2.1",
+    "sinon": "^5.0.10",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
+  }
+}
