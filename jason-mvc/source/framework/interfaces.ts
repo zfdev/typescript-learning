@@ -1,11 +1,19 @@
-//Program event interface
+/**
+ * Program event interface
+ * 
+ * @interface IAppEvent
+ */
 interface IAppEvent{
     topic: string;
     data: any;
     handler: (e: any, data: any) =>void;
 }
 
-//Mediator interface
+/**
+ * Mediator interface
+ * 
+ * @interface IMediator
+ */
 interface IMediator{
     publish(e: IAppEvent): void; //publish event
     subscribe(e: IAppEvent): void; //subscribe event

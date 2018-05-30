@@ -1,10 +1,12 @@
 const gulp = require('gulp');
-const browserify = require('browserify');
+const browserify = require('gulp-browserify');
 const tslint = require('gulp-tslint');
 const tsc = require('gulp-typescript');
+const sourcemaps = require('gulp-sourcemaps');
+const rename = require('gulp-rename');
+
 const tsMVCProject = tsc.createProject('./tsconfig.json');
 const tsTestProject = tsc.createProject('./tsconfig.json');
-const sourcemaps = require('gulp-sourcemaps');
 
 
 gulp.task('lint', function () {
@@ -16,7 +18,7 @@ gulp.task('lint', function () {
             formatter: "verbose"
         }))
         .pipe(tslint.report())
-})
+});
 
 gulp.task('build:project', function () {
     let tsResult = gulp.src('./source/**/**.ts')
@@ -25,7 +27,7 @@ gulp.task('build:project', function () {
     return tsResult.js.pipe(sourcemaps.write())
         //.pipe(bro())
         .pipe(gulp.dest('./build/source/'));
-})
+});
 
 gulp.task('build:test', function () {
     let tsResult = gulp.src('./test/**/**.ts')
@@ -34,6 +36,36 @@ gulp.task('build:test', function () {
     return tsResult.js.pipe(sourcemaps.write())
         //.pipe(bro())
         .pipe(gulp.dest('./build/test/'));
-})
+});
+
+gulp.task('bundle:project', function () {
+    gulp.src('./build/source/app/main.js')
+        .pipe(browserify({
+            insertGlobals: true,
+            debug: !gulp.env.production
+        }))
+        .pipe(rename('bundle.js'))
+        .pipe(gulp.dest('./bundled/source/'))
+});
+
+gulp.task('bundle:unit-test', function () {
+    gulp.src('./build/test/bdd.test.js')
+        .pipe(browserify({
+            insertGlobals: true,
+            debug: !gulp.env.production
+        }))
+        .pipe(rename('bdd.test.js'))
+        .pipe(gulp.dest('./bundled/test/'))
+});
+
+gulp.task('bundle:e2e-test', function () {
+    gulp.src('./build/test/e2e.test.js')
+        .pipe(browserify({
+            insertGlobals: true,
+            debug: !gulp.env.production
+        }))
+        .pipe(rename('e2e.test.js'))
+        .pipe(gulp.dest('./bundled/test/'))
+});
 
 gulp.task('default', ['build:project', 'build:test']);

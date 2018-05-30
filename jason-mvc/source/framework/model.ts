@@ -1,8 +1,6 @@
 /// <reference path="./interfaces.ts" />
-/// <reference path="../../node_modules/@types/q/index.d.ts" />
 
 import {EventEmitter} from './event_emitter';
-import * as Q from 'q';
 
 function ModelSettings(serviceUrl: string){
     return function(target: any){   

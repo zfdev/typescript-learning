@@ -69,7 +69,7 @@ class View extends EventEmitter implements IView {
     }
 
     private compileTemplateAsync(source: string) {
-        return new Promise<void>((resolve: (r) => void, reject: (e) => void) => {
+        return new Promise((resolve: (r) => void, reject: (e) => void) => {
             try {
                 var template = Handlebars.compile(source);
                 resolve(template);
