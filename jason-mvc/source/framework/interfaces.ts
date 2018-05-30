@@ -50,3 +50,13 @@ interface IController extends IEventEmitter{
     initialize(): void;
     dispose(): void;
 }
+
+interface IModel extends IEventEmitter{
+    initialize(): void;
+    dispose(): void;
+}
+
+interface IView extends IEventEmitter{
+    initialize(): void;
+    dispose(): void;
+}
