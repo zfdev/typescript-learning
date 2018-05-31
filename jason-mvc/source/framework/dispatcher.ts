@@ -1,20 +1,20 @@
 /// <reference path="./interfaces.ts" />
 
-import {EventEmitter} from './event_emitter';
-import {AppEvent} from './app_event'; 
+import { EventEmitter } from './event_emitter';
+import { AppEvent } from './app_event';
 
-class Dispatcher extends EventEmitter implements IDispatcher{
+class Dispatcher extends EventEmitter implements IDispatcher {
     private _controllersHashMap: Object;
     private _currentController: IController;
     private _currentControllerName: string;
-    constructor(metiator: IMediator, controllers: IControllerDetails[]){
+    constructor(metiator: IMediator, controllers: IControllerDetails[]) {
         super(metiator);
         this._controllersHashMap = this.getController(controllers);
         this._currentController = null;
         this._currentControllerName = null;
     }
 
-    public initialize(){
+    public initialize() {
         this.subscribeToEvents([
             new AppEvent('app.dispatch', null, (e: any, data?: any) => {
                 this.dispatch(data);
@@ -22,57 +22,57 @@ class Dispatcher extends EventEmitter implements IDispatcher{
         ]);
     }
 
-    private getController(controllers: IControllerDetails[]):Object{
+    private getController(controllers: IControllerDetails[]): Object {
         var hashMap, hashMapEntry, name, controller, l;
         hashMap = {};
         l = controllers.length;
-        if(l <= 0){
+        if (l <= 0) {
             this.triggerEvent(new AppEvent(
                 'app.error',
                 'Cannot create an application without at least one controller.',
                 null
             ));
         }
-        for(var i=0; i<l; i++){
+        for (var i = 0; i < l; i++) {
             controller = controllers[i];
             name = controller.controllerName;
             hashMapEntry = hashMap[name];
-            if(hashMapEntry !== null && hashMapEntry !== undefined){
+            if (hashMapEntry !== null && hashMapEntry !== undefined) {
                 this.triggerEvent(new AppEvent(
                     'app.error',
                     'Two controller cannot use the same name.',
                     null
                 ));
-                hashMap[name] = controller.controller;
             }
+            hashMap[name] = controller.controller;
         }
         return hashMap;
     }
 
-    private dispatch(route: IRoute){
+    private dispatch(route: IRoute) {
         var Controller = this._controllersHashMap[route.controllerName];
-        if(Controller === null || Controller === undefined){
+        if (Controller === null || Controller === undefined) {
             this.triggerEvent(new AppEvent(
                 'app.error',
                 `Controller not found: ${route.controllerName}`,
                 null
             ));
-        }else{
+        } else {
             var controller: IController = new Controller(this._metiator);
             var a = controller[route.actionName];
-            if(a === null || a === undefined){
+            if (a === null || a === undefined) {
                 this.triggerEvent(new AppEvent(
                     'app.error',
                     `Action not found in controller: ${route.controllerName} - + ${route.actionName}`,
                     null
                 ));
-            }else{
-                if(this._currentController == null){
+            } else {
+                if (this._currentController == null) {
                     this._currentControllerName = route.controllerName;
                     this._currentController = controller;
                     this._currentController.initialize();
-                }else{
-                    if(this._currentControllerName !== route.controllerName){
+                } else {
+                    if (this._currentControllerName !== route.controllerName) {
                         this._currentController.dispose();
                         this._currentControllerName = route.controllerName;
                         this._currentController = controller;
@@ -89,4 +89,4 @@ class Dispatcher extends EventEmitter implements IDispatcher{
     }
 }
 
-export {Dispatcher};
+export { Dispatcher };

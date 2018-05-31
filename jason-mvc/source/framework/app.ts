@@ -9,13 +9,13 @@ class App {
     private _dispatcher: IDispatcher;
     private _mediator: IMediator;
     private _router: IRouter;
-    private _contollers: IControllerDetails[];
+  private _controllers : IControllerDetails[];
     private _onErrorHandler: (o: Object) => void;
     constructor(appSettings: IAppSettings) {
-        this._contollers = appSettings.controllers;
+    this._controllers = appSettings.controllers;
         this._mediator = new Mediator(appSettings.isDebug || false);
         this._router = new Router(this._mediator, appSettings.defaultController, appSettings.defaultAction);
-        this._dispatcher = new Dispatcher(this._mediator, this._contollers);
+    this._dispatcher = new Dispatcher(this._mediator, this._controllers);
         this._onErrorHandler = appSettings.onErrorHandler;
     }
     public initialize(): void {

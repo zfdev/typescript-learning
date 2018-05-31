@@ -20,7 +20,7 @@ class NasdaqModel extends Model implements IModel {
         this.unsubscribeToEvents();
     }
 
-    public onChange(args): void{
+    private onChange(args): void{
         this.getAsync("json", args)
             .then((data)=>{
                 var stocks = {

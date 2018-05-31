@@ -1,7 +1,7 @@
 /// <reference path="../../framework/interfaces.ts" />
 
 import { Controller, AppEvent } from "../../framework/framework";
-import { MarketView } from "../view/MarketView";
+import { MarketView } from "../views/market_view";
 import { NasdaqModel } from "../models/nasdaq_model";
 import { NyseModel } from "../models/nyse_model";
 

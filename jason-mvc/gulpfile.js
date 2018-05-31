@@ -38,7 +38,7 @@ gulp.task('build:test', function () {
         .pipe(gulp.dest('./build/test/'));
 });
 
-gulp.task('bundle:project', function () {
+gulp.task('bundle:project', ['build:project'], function () {
     gulp.src('./build/source/app/main.js')
         .pipe(browserify({
             insertGlobals: true,
@@ -68,4 +68,4 @@ gulp.task('bundle:e2e-test', function () {
         .pipe(gulp.dest('./bundled/test/'))
 });
 
-gulp.task('default', ['build:project', 'build:test']);
+gulp.task('default', ['bundle:project']);

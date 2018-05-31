@@ -20,12 +20,12 @@ class NyseModel extends Model implements IModel {
         this.unsubscribeToEvents();
     }
 
-    public onChange(args): void{
+    private onChange(args): void{
         this.getAsync("json", args)
             .then((data)=>{
                 var stocks = {
                     items: data,
-                    market: "NASDAQ"
+                    market: "NYSE"
                 };
                 this.triggerEvent(new AppEvent("app.view.market.render", stocks, null));
             })

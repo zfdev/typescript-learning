@@ -5,10 +5,10 @@ import { EventEmitter } from './event_emitter';
 import { AppEvent } from './app_event';
 
 function ViewSettings(templateUrl: string, container: string): any {
-    return function (target: any): void {
+    return function (target: any) {
         var original: any = target;
-        function construct(constructor: any, args): any {
-            var c: any = function (contructor: any, args: any): any {
+        function construct(constructor: any, args) {
+            var c : any = function () {
                 return constructor.apply(this, args);
             };
             c.prototype = constructor.prototype;
@@ -84,8 +84,8 @@ class View extends EventEmitter implements IView {
             if (this._templateDelegate === undefined || this._templateDelegate === null) {
                 this.loadTemplateAsync().then((source) => {
                     return this.compileTemplateAsync(source);
-                }).then((templateDelegat: any) => {
-                    this._templateDelegate = templateDelegat;
+                }).then((templateDelegate: any) => {
+                    this._templateDelegate = templateDelegate;
                     resolve(this._templateDelegate);
                 }).catch((e) => {
                     reject(e);

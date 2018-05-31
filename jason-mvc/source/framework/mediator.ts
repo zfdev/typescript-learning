@@ -16,15 +16,15 @@ class Mediator implements IMediator{
     }
     public subscribe(e: IAppEvent):void{
         if(this._isDebug === true){
-            console.log(new Date().getTime(), "SUBSCRIBE", e.topic, e.data);
+            console.log(new Date().getTime(), "SUBSCRIBE", e.topic, e.handler);
         }
-        this._$.on(e.topic, e.data);
+        this._$.on(e.topic, e.handler);
     }
     public unsubscribe(e: IAppEvent):void{
         if(this._isDebug === true){
             console.log(new Date().getTime(), "UNSUBSCRIBE", e.topic, e.data);
         }
-        this._$.off(e.topic, e.data);
+        this._$.off(e.topic);
     }
 }
 
